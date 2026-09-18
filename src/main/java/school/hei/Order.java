@@ -1,25 +1,40 @@
 package school.hei;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Order {
-    private String description;
-    private List<Order> CustomOrders;
-    private double quantity;
+    private final String description;
+    private final Customer customer;
+    private final List<Clothes> customOrders;
+    private final double quantity;
 
-    public Order(String description, List<Order> customOrders, double quantity) {
-        this.description = description;
-        CustomOrders = customOrders;
-        this.quantity = quantity;
+    public Order(String description, Customer customer, List<Clothes> customOrders) {
+        this(description, customer, customOrders, 1);
     }
 
+    public Order(String description, Customer customer, List<Clothes> customOrders, double quantity) {
+        this.description = description;
+        this.customer = customer;
+        this.customOrders = new ArrayList<>(customOrders);
+        this.quantity = quantity;
+    }
 
     public String getDescription() {
         return description;
     }
 
-    public List<Order> getCustomOrders() {
-        return CustomOrders;
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public List<Clothes> getCustomOrders() {
+        return Collections.unmodifiableList(customOrders);
+    }
+
+    public List<Clothes> getClothes() {
+        return getCustomOrders();
     }
 
     public double getQuantity() {
@@ -28,15 +43,10 @@ public class Order {
 
     public double getTotalAmount() {
         double totalAmount = 0;
-        for (Order customOrder : CustomOrders) {
+        for (Clothes customOrder : customOrders) {
             totalAmount += customOrder.getPrice() * quantity;
         }
         return totalAmount;
     }
-
-    private double getPrice() {
-        double price = 0;
-    }
-
 }
 
